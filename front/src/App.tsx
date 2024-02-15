@@ -1,8 +1,10 @@
+import Button from './components/Button'
+import Header from './components/Header'
 import './styles/index.scss'
 
 const App = () =>{
     return <>
-    <h1>Hello, world!</h1>
+        <Header><Button variant='action'>Create quiz</Button></Header>
     </>
 }
 

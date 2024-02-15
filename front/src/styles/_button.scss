@@ -1,0 +1,17 @@
+.button-primary{
+    padding: 8px 34px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #131166;
+    cursor: pointer;
+
+    &.disabled{
+        opacity: 60%;
+        cursor: not-allowed;
+    }
+}
+
+.button-action{
+    cursor: pointer;
+}

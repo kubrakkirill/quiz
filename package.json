@@ -1,16 +1,23 @@
 {
-  "name": "front",
+  "name": "quiz",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --config webpack/webpack.config.js --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack serve --config webpack.config.js --open",
+    "build": "webpack --config webpack.config.js",
+    "server": "node server/server.js",
+    "server dev": "nodemon server/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/static": "^7.0.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.4",
+    "fastify": "^4.26.1",
+    "fastify-static": "^4.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -26,6 +33,7 @@
     "css-loader": "^6.10.0",
     "html-webpack-plugin": "^5.6.0",
     "node-sass": "^9.0.0",
+    "nodemon": "^2.0.22",
     "sass-loader": "^14.1.0",
     "style-loader": "^3.3.4",
     "typescript": "^5.3.3",
