@@ -1,6 +1,8 @@
+@import '_app';
 @import '_button';
 @import '_container';
 @import '_header';
+@import '_timer';
 
 body{
     margin: 0;
@@ -10,6 +12,9 @@ body{
 h1{
     background-color: aqua;
 }
+ul {
+    list-style-type: none;
+  }
 a{
     text-decoration: none;
     color: inherit;

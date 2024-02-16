@@ -1,0 +1,1 @@
+export const DELETE_QUIZ = 'DELETE_QUIZ';
