@@ -1,6 +1,6 @@
-const WebSocket = require('ws');
+import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:3000'); // Assuming your server is running on localhost:3000
+const ws = new WebSocket('ws://localhost:3000');
 
 ws.on('open', function open() {
   console.log('WebSocket connection established');

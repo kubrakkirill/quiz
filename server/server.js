@@ -1,8 +1,8 @@
 const fastify = require('fastify')();
-const path = require('path');
+import { join } from 'path';
 
 fastify.register(require('@fastify/static'), {
-  root: path.join(__dirname, '../front/build'),
+  root: join(__dirname, '../front/build'),
   prefix: '/'
 });
 
