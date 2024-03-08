@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
-import { Quiz, QuizQuestion } from "../types/types";
+import { IOption, Quiz, QuizQuestion } from "../types/types";
 import TextInput from "./forms/TextInput";
 import Button from "./Button";
 
 const CreateQuiz = ({ questions = 1, options = 1 }) => {
-  const [quizQuestions, setQuizQuestions] = useState<Array<QuizQuestion>>([]);
-  const [currentQuestionTitle, setCurrentQuestionTitle] = useState<string>("");
-  const [currentOption, setCurrentOption] = useState<string>("");
-  const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion>({
-    title: "",
-    options: [],
-  });
   const [quiz, setQuiz] = useState<Quiz>({
     id: Math.random(),
     creator: "",
     title: "",
     time: 0,
-    questions: quizQuestions,
+    questions: [],
     completed: false,
   });
-  const [optionsCount, setOptionsCount] = useState(options);
 
   const formSubmit = (e: any) => {
     e.preventDefault();
@@ -33,7 +25,7 @@ const CreateQuiz = ({ questions = 1, options = 1 }) => {
       creator: formValues?.yourName,
       title: formValues?.quizTitle,
       time: formValues?.timer,
-      questions: [...quizQuestions],
+      questions: quiz.questions,
       completed: false,
     });
     console.log(formValues);
@@ -47,79 +39,8 @@ const CreateQuiz = ({ questions = 1, options = 1 }) => {
     setQuiz({ ...quiz, title: e.target.value });
   };
 
-  const handleQuestionTitleChange = (e: any) => {
-    console.log(e.target.value);
-    setCurrentQuestionTitle(e.target.value);
-  };
-
   const handleTimerChange = (e: any) => {
     setQuiz({ ...quiz, time: e.target.value });
-  };
-
-  const handleOptionChange = (e: any) => {
-    setCurrentOption(e.target.value);
-  };
-
-  const handleOptionClick = () => {
-    setCurrentQuestion({
-      title: currentQuestionTitle,
-      options: [...currentQuestion.options, { option: currentOption || "" }],
-    });
-    console.log(currentQuestion);
-    setOptionsCount((prevCount) => prevCount + 1);
-  };
-
-  const handleQuestionsClick = () => {
-    setQuizQuestions((prevQuestions) => [...prevQuestions, currentQuestion]);
-    setCurrentOption("");
-  };
-
-  const OptionsCount = ({
-    count,
-    questionId,
-  }: {
-    count: number;
-    questionId: string;
-  }) => {
-    let result = [];
-    for (let i = 0; i < count; i++) {
-      result.push(
-        <TextInput
-          key={questionId + "_option_" + i}
-          id={`${questionId}_option_${i}`}
-          name={`${questionId}_option_${i}`}
-          type="text"
-          label={`option ${i + 1}`}
-          onChange={handleOptionChange}
-        />
-      );
-    }
-    return <>{result}</>;
-  };
-
-  const AddQuestion = () => {
-    const id = Math.random().toString();
-    return (
-      <>
-        <TextInput
-          id={id}
-          component="textarea"
-          label="Text"
-          name="question"
-          value={currentQuestionTitle}
-          onChange={handleQuestionTitleChange}
-        />
-        <OptionsCount count={optionsCount} questionId={id} />
-        <div style={{ width: "50%" }}>
-          <Button variant="primary" onClick={handleOptionClick}>
-            New Option
-          </Button>
-        </div>
-        <Button variant="primary" onClick={handleQuestionsClick}>
-          Add Question
-        </Button>
-      </>
-    );
   };
 
   return (
@@ -151,10 +72,79 @@ const CreateQuiz = ({ questions = 1, options = 1 }) => {
       />
 
       <h2>Questions</h2>
-      <AddQuestion />
+      <AddQuestion questions={quiz.questions} />
       <Button variant="primary">Start</Button>
     </form>
   );
 };
 
 export default CreateQuiz;
+
+interface IOptions {
+  options: IOption[]
+  questionId: string;
+}
+
+const Options: React.FC<IOptions> = ({
+  options,
+  questionId
+}) => {
+  return <ul>
+    {options.map((option, i) => {
+      return <li key={option.title}>
+        <TextInput
+          id={`${questionId}_option_${option.title}`}
+          name={`${questionId}_option_${option.title}`}
+          type="text"
+          label={`option ${i + 1}`}
+          onChange={e => option.title = e.target.value}
+        />
+      </li>
+    })}
+  </ul>
+};
+
+interface IAddQuestion {
+  questions: QuizQuestion[]
+}
+
+const AddQuestion: React.FC<IAddQuestion> = ({
+  questions
+}) => {
+  const [draftQuestions, setDraftQuestions] = useState(questions)
+  const addNewQuestion = () => {
+    const newQuestion = { title: '', options: [{ title: '' }] }
+    setDraftQuestions([...draftQuestions, newQuestion])
+  }
+
+  return (
+    <>
+    {draftQuestions.map((question, i) => {
+      const id = Math.random().toString();
+      const addNewOption = () => {
+        question.options.push({ title: '' })
+        setDraftQuestions([...draftQuestions])
+      }
+      return <div key={question.title + i}>
+        <TextInput
+          id={id}
+          component="textarea"
+          label="Text"
+          name="question"
+          value={question.title}
+          onChange={e => question.title = e.target.value}
+        />
+        <Options options={question.options} questionId={id} />
+        <div style={{ width: "50%" }}>
+          <Button variant="primary" onClick={addNewOption}>
+            New Option
+          </Button>
+        </div>
+      </div>
+    })}
+      <Button variant="primary" onClick={addNewQuestion}>
+        Add Question
+      </Button>
+    </>
+  );
+};
