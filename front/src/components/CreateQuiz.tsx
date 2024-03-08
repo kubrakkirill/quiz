@@ -91,10 +91,10 @@ const Options: React.FC<IOptions> = ({
 }) => {
   return <ul>
     {options.map((option, i) => {
-      return <li key={option.title}>
+      return <li key={i}> // need id too
         <TextInput
-          id={`${questionId}_option_${option.title}`}
-          name={`${questionId}_option_${option.title}`}
+          id={`${questionId}_option_${i}`}
+          name={`${questionId}_option_${i}`}
           type="text"
           label={`option ${i + 1}`}
           onChange={e => option.title = e.target.value}
@@ -111,30 +111,35 @@ interface IAddQuestion {
 const AddQuestion: React.FC<IAddQuestion> = ({
   questions
 }) => {
-  const [draftQuestions, setDraftQuestions] = useState(questions)
+  const [draftQuestions, setDraftQuestions] = useState([...questions])
   const addNewQuestion = () => {
-    const newQuestion = { title: '', options: [{ title: '' }] }
+    const id = Math.random().toString();
+    const newQuestion: QuizQuestion = { id, title: '', options: [{ title: '' }] }
+    questions.push(newQuestion)
     setDraftQuestions([...draftQuestions, newQuestion])
   }
 
   return (
     <>
     {draftQuestions.map((question, i) => {
-      const id = Math.random().toString();
+      const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        question.title = e.target.value
+        setDraftQuestions([...draftQuestions])
+      }
       const addNewOption = () => {
         question.options.push({ title: '' })
         setDraftQuestions([...draftQuestions])
       }
-      return <div key={question.title + i}>
+      return <div key={question.id}>
         <TextInput
-          id={id}
+          id={question.id}
           component="textarea"
           label="Text"
           name="question"
           value={question.title}
-          onChange={e => question.title = e.target.value}
+          onChange={onTitleChange}
         />
-        <Options options={question.options} questionId={id} />
+        <Options options={question.options} questionId={question.id} />
         <div style={{ width: "50%" }}>
           <Button variant="primary" onClick={addNewOption}>
             New Option

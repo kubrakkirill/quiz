@@ -2,7 +2,8 @@ export interface IOption {
     title: string
 }
 
-export interface QuizQuestion{
+export interface QuizQuestion {
+    id: string;
     title: string;
     options: Array<IOption>;
 }
