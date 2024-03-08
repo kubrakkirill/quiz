@@ -4,11 +4,18 @@ import { ReactNode } from "react";
 export interface ButtonProps{
     variant: 'primary' | 'action'
     disabled?: boolean
-    onClick?: ()=>void
+    onClick?: any
     children: ReactNode
+    type?: "button" | "submit" | "reset" | undefined
 }
 
-const Button: React.FC<ButtonProps> = ({variant = 'primary',children,disabled,onClick}) => {
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  children,
+  disabled,
+  onClick,
+  type = 'button'
+}) => {
     if(variant === 'action'){
         return (
             <span onClick={onClick} className="button-action">
@@ -17,7 +24,7 @@ const Button: React.FC<ButtonProps> = ({variant = 'primary',children,disabled,on
           );
     }
     return (
-      <button onClick={onClick} className={`button-primary ${disabled ? 'disabled' : ''}`}>
+      <button type={type} onClick={onClick} className={`button-primary ${disabled ? 'disabled' : ''}`}>
         {children}
       </button>
     );
