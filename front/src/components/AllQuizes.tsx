@@ -6,7 +6,7 @@ interface AllQuizesProps{
 }
 
 const AllQuizes: React.FC<AllQuizesProps> = ({allQuizes}) => {
-  
+  console.log(allQuizes)
   return (
     <div>
         {allQuizes.length > 0 ? <ul>{allQuizes.map((quiz:Quiz) => (

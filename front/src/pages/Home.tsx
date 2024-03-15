@@ -3,19 +3,19 @@ import Button from "../components/Button";
 import AllQuizes from "../components/AllQuizes";
 import TextInput from "../components/forms/TextInput";
 import { useState } from "react";
-import CreateQuiz from "../components/CreateQuiz";
+import CreateQuiz from "../components/quiz/CreateQuiz";
 
 
 const Home = () => {
 
-  const [createQuiz, setCreateQuiz] = useState<boolean>(true)
+  const [createQuiz, setCreateQuiz] = useState<boolean>(false)
 
     
     return <div className='home'>
-    <Header><Button variant='action'>Create quiz</Button></Header>
+    <Header></Header>
     {!createQuiz && <AllQuizes/>}
     {!createQuiz && <Button onClick={()=>setCreateQuiz(true)} variant='primary'>Create quiz</Button>}
-    {createQuiz && <CreateQuiz/>}
+    {createQuiz && <CreateQuiz onClick={()=>setCreateQuiz(false)} />}
 </div>;
   };
   

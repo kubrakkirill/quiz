@@ -4,7 +4,7 @@ import Container from "./Container";
 
 export interface HeaderProps{
     disabled?: boolean
-    children: ReactNode
+    children?: ReactNode
 }
 
 const Header: React.FC<HeaderProps> = ({children,disabled}) => {
