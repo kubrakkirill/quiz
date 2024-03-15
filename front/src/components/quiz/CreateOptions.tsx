@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IOption, QuizQuestion } from "../../types/types";
 import TextInput from "../forms/TextInput";
 
@@ -21,6 +21,8 @@ const Options: React.FC<IOptions> = ({ options, question }) => {
     newOptions[index].title = value;
     setUpdatedOptions(newOptions);
   };
+
+  useEffect(() => setUpdatedOptions(options), [options])
 
   return (
     <ul>
