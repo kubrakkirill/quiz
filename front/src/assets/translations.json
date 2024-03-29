@@ -1,0 +1,29 @@
+{
+    "homePage":{
+        "noQuizzes": "No active quizzes yet", 
+        "createQuizButtin": "create quiz"
+    },
+    "createQuizStep":{
+        "titleQuiz": "Create new quiz",
+        "titleQuestion": "Questions",
+        "fields":{
+            "name": "Your name",
+            "quizTitle": "Quiz title",
+            "timer": "Time for answer (sec)",
+            "question": "Question",
+            "option": "option",
+            "addOptionButton": "add option",
+            "addQuestionButton": "add question"
+        },
+        "startButton": "start",
+        "errors":{
+            "noName": "Please, enter your name",
+            "noQuizTitle": "Please, enter quiz title",
+            "noTimer": "Please, enter time for answer",
+            "noQuestion": "Please, enter question",
+            "noOption": "Please, enter option",
+            "onlyOneOption": "Should be more at least 2 options",
+            "correctOption": "At least one option should be correct"
+        }
+    }
+}
