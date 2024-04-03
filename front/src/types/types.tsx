@@ -8,6 +8,7 @@ export interface QuizQuestion {
     title: string;
     options: Array<IOption>;
     editMode: boolean
+    correctOptionIndex: number
 }
 
 export interface Quiz{

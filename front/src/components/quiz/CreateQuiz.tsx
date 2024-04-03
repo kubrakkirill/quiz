@@ -65,6 +65,7 @@ const CreateQuiz: React.FC<ICreateQuiz> = ({ onClick }) => {
         id="yourName"
         name="creator"
         type="text"
+        readOnly={addQuestion}
         label={text.fields.name}
         value={quiz.creator}
         onChange={handleNameChange}
@@ -73,6 +74,7 @@ const CreateQuiz: React.FC<ICreateQuiz> = ({ onClick }) => {
         id="quizTitle"
         name="quizTitle"
         type="text"
+        readOnly={addQuestion}
         label={text.fields.quizTitle}
         value={quiz.title}
         onChange={handleTitleChange}
@@ -81,6 +83,7 @@ const CreateQuiz: React.FC<ICreateQuiz> = ({ onClick }) => {
         id="timer"
         name="timer"
         type="number"
+        readOnly={addQuestion}
         min={10}
         max={120}
         label={text.fields.timer}

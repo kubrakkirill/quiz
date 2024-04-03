@@ -9,13 +9,14 @@ import ErrorMessage from "../Error";
 
 interface IAddQuestion {
   quiz: Quiz;
-  onClick?: any;
+  onClick: (quiz: Quiz) => void;
 }
 
 const text = t.createQuizStep;
 const AddQuestion: React.FC<IAddQuestion> = ({ quiz, onClick }) => {
   const [draftQuestions, setDraftQuestions] = useState([...quiz.questions]);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | null>();
+
   const addNewQuestion = () => {
     const id = Math.random().toString();
     const updatedQuestions = draftQuestions.map((question) => ({
@@ -26,25 +27,27 @@ const AddQuestion: React.FC<IAddQuestion> = ({ quiz, onClick }) => {
     const newQuestion: QuizQuestion = {
       id,
       title: "",
-      options: [{ title: "", variant: false }],
+      options: [{ title: "", variant: true }],
       editMode: true,
+      correctOptionIndex: 0
     };
-    console.log()
-    if (!!draftQuestions.find((o) => !validation(o.title))) {
+
+    if (draftQuestions.some((o) => !validation(o.title))) {
       setError(text.errors.noQuestion);
-    } 
-     else if(draftQuestions.map(q=>q.options.find((o) => !validation(o.title))).length > 0 && draftQuestions.length > 0){
-       setError(text.errors.noOption);
-     } 
-    else {
-      setError(undefined);
+    } else if (
+      draftQuestions.length > 0 &&
+      draftQuestions.some((q) => q.options.some((o) => !validation(o.title)))
+    ) {
+      setError(text.errors.noOption);
+    } else {
+      setError(null);
       setDraftQuestions([...updatedQuestions, newQuestion]);
-      if (onClick) {
-        onClick({ ...quiz, questions: updatedQuestions });
-      }
+      onClick({ ...quiz, questions: updatedQuestions });
     }
   };
-
+  const onQuestionChange = () =>{
+    setDraftQuestions([...draftQuestions]);
+  }
   return (
     <>
       {draftQuestions.map((question, i) => {
@@ -61,7 +64,7 @@ const AddQuestion: React.FC<IAddQuestion> = ({ quiz, onClick }) => {
             setError(undefined);
             question.options = [
               ...question.options,
-              { title: "", variant: false },
+              {title: "", variant: false },
             ];
             setDraftQuestions([...draftQuestions]);
           }
@@ -78,7 +81,7 @@ const AddQuestion: React.FC<IAddQuestion> = ({ quiz, onClick }) => {
                   value={question.title}
                   onChange={onTitleChange}
                 />
-                <Options options={question.options} question={question} />
+                <Options options={question.options} question={question} onQuestionChange={onQuestionChange}/>
                 <div style={{ width: "50%" }}>
                   <Button variant="primary" onClick={addNewOption}>
                     {text.fields.addOptionButton}
@@ -88,7 +91,7 @@ const AddQuestion: React.FC<IAddQuestion> = ({ quiz, onClick }) => {
             ) : (
               <>
                 {question.title}
-                <Options options={question.options} question={question} />
+                <Options options={question.options} question={question} onQuestionChange={onQuestionChange}/>
               </>
             )}
           </div>

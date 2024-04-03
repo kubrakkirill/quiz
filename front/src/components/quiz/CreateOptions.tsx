@@ -5,15 +5,15 @@ import TextInput from "../forms/TextInput";
 interface IOptions {
   options: IOption[];
   question: QuizQuestion;
+  onQuestionChange: (question: QuizQuestion)=>void;
 }
 
-const Options: React.FC<IOptions> = ({ options, question }) => {
+const Options: React.FC<IOptions> = ({ options, question, onQuestionChange }) => {
   const [updatedOptions, setUpdatedOptions] = useState<IOption[]>(options);
 
   const handleCheckboxChange = (index: number) => {
-    const newOptions = [...updatedOptions];
-    newOptions[index].variant = !newOptions[index].variant;
-    setUpdatedOptions(newOptions);
+    question.correctOptionIndex = index;
+    onQuestionChange(question)
   };
 
   const handleInputChange = (index: number, value: string) => {
@@ -31,8 +31,9 @@ const Options: React.FC<IOptions> = ({ options, question }) => {
           {question.editMode ? (
             <>
               <input
-                type="checkbox"
-                checked={option.variant}
+                type="radio"
+                name={`${question.id}_options`}
+                checked={question.correctOptionIndex === i}
                 onChange={() => handleCheckboxChange(i)}
               />
               <TextInput
@@ -45,7 +46,7 @@ const Options: React.FC<IOptions> = ({ options, question }) => {
               />
             </>
           ) : (
-            <span>{option.title} {option.variant && "✓"}</span>
+            <span>{option.title} {question.correctOptionIndex === i && "✓"}</span>
           )}
         </li>
       ))}
